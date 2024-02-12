@@ -6,8 +6,7 @@ const $form = document.getElementById("form-login");
 const $formRegistrar = document.getElementById("formRegistrar");
 const { floatingInputUser, floatingInputPass, floatingInputRepetir } = $formRegistrar;
 const audioFondo = new Audio("../audio/fondo.mp3");
-// const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-const usuarios = leerCookie();
+const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 // const usuarios = [{ usuario: "fede", password: "1234" }];
 const { floatingInput, floatingPassword } = $form;
 
@@ -74,8 +73,7 @@ $btnRegistrar.addEventListener("click", (e) => {
   if (!flag) {
     if (floatingInputPass.value === floatingInputRepetir.value) {
       usuarios.push(user);
-      // localStorage.setItem("usuarios", JSON.stringify(usuarios));
-      escribirCookie();
+      localStorage.setItem("usuarios", JSON.stringify(usuarios));
       alert("Usuario creado con exito");
       dialogClose();
     } else alert("Las contraseñas no coinciden");
@@ -117,48 +115,6 @@ document.getElementById("btnSesion").addEventListener("click", (e) => {
   }, 2000);
 });
 
-function escribirCookie() {
-  // Nombre y valor de la cookie
-  const nombreCookie = "usuarios";
-  const valorCookie = JSON.stringify(usuarios);
-
-  // Configurar la fecha de expiración (opcional)
-  let fechaExpiracion = new Date();
-  fechaExpiracion.setDate(fechaExpiracion.getDate() + 99999); // Caduca en 7 días
-
-  // Crear la cadena de cookie
-  let cadenaCookie =
-    nombreCookie + "=" + encodeURIComponent(valorCookie) + "; expires=" + fechaExpiracion.toUTCString() + "; path=/";
-
-  // Escribir la cookie
-  document.cookie = cadenaCookie;
-
-  // alert("Cookie escrita con éxito.");
-}
-
-function leerCookie() {
-  // Nombre de la cookie que deseas leer
-  const nombreCookie = "usuarios";
-
-  // Separar las cookies en un array
-  const cookies = document.cookie.split(";");
-
-  // Buscar la cookie específica
-  for (let i = 0; i < cookies.length; i++) {
-    let cookie = cookies[i].trim();
-
-    // Verificar si la cookie comienza con el nombre deseado
-    if (cookie.indexOf(nombreCookie + "=") === 0) {
-      // Obtener el valor de la cookie
-      let valorCookie = cookie.substring(nombreCookie.length + 1);
-      // alert("Valor de la cookie: " + decodeURIComponent(valorCookie));
-
-      return JSON.parse(decodeURIComponent(valorCookie));
-    }
-  }
-  return [];
-}
-
 //Sonido
 audioFondo.addEventListener("ended", () => {
   audioFondo.play();
@@ -181,7 +137,7 @@ window.addEventListener("click", (e) => {
 
     setTimeout(() => {
       if (VerificarPalabra(formada, palabra, usuarios, $divDesordenado, $divCompletar)) {
-        escribirCookie();
+        localStorage.setItem("usuarios", JSON.stringify(usuarios));
       }
     }, 500);
   } else if (target.matches("button") && target.id === "btnAceptar") {
