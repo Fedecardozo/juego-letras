@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game how cool is your intelligence</title>
+    <link rel="shortcut icon" href="../icons/logo.ico" type="image/x-icon" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <script src="../js/index.js" type="module" defer></script>
+  </head>
+  <body>
+    <main class="container-fluid">
+      <section class="texto">
+        <img src="../img/fondo.png" alt="logo" class="img-logo" />
+        <h1>Game how cool is your intelligence</h1>
+        <h2>¿Que tan joven es tu inteligencia?</h2>
+        <p>
+          Este es un juego desarrollado para fortalecer tu mente de manera entretenida, este juego es tu aliado para
+          mejorar habilidades cognitivas. ¡Descúbrelo ahora y eleva tu inteligencia de manera divertida!
+        </p>
+      </section>
+
+      <img src="./img/loading.gif" alt="loading" id="spinner" class="spinner" hidden />
+      <fieldset>
+        <form id="form-login">
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="floatingInput"
+              name="usuario"
+              placeholder="Usuario"
+              required
+              autocomplete="off"
+            />
+            <label for="floatingInput" id="lblUsuario">Usuario</label>
+          </div>
+
+          <div class="input-group">
+            <div class="form-floating">
+              <input
+                type="password"
+                class="form-control"
+                id="floatingPassword"
+                name="password"
+                placeholder="Contraseña"
+                required
+                autocomplete="off"
+              />
+              <label for="floatingPassword" id="lblPass">Contraseña </label>
+            </div>
+            <button type="button" class="input-group-text" id="basic-addon1">
+              <i class="bi bi-eye-fill" id="icon-ojo"></i>
+            </button>
+          </div>
+          <input type="submit" class="btn btn-primary w-100 mt-3" value="Iniciar sesión" id="btnSesion" />
+
+          <div class="ancla">
+            <a href="#">¿Olvidaste tu contraseña?</a>
+          </div>
+
+          <hr />
+
+          <button type="button" id="btnRegistrarse" class="btn btn-success w-100">Registrarse</button>
+        </form>
+      </fieldset>
+      <dialog id="dialog">
+        <h2>Registrate</h2>
+        <hr />
+        <form id="formRegistrar">
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="floatingInputUser"
+              name="usuario"
+              placeholder="Usuario"
+              required
+              autocomplete="off"
+            />
+            <label for="floatingInputUser">Usuario</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="password"
+              class="form-control"
+              id="floatingInputPass"
+              name="password"
+              placeholder="Contraseña"
+              required
+              autocomplete="off"
+            />
+            <label for="floatingInputPass">Contraseña</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="password"
+              class="form-control"
+              id="floatingInputRepetir"
+              name="password"
+              placeholder="Repetir contraseña"
+              required
+              autocomplete="off"
+            />
+            <label for="floatingInputRepetir">Repetir contraseña</label>
+          </div>
+          <div class="container">
+            <div class="row justify-content-center">
+              <button type="button" id="btnCerrar" class="btn btn-secondary m-1 col-4">Cerrar</button>
+              <button type="submit" class="btn btn-success m-1 col-4" id="btnRegistrar">Registrar</button>
+            </div>
+          </div>
+        </form>
+      </dialog>
+    </main>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

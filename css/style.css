@@ -1,0 +1,170 @@
+/* Definición de variables */
+:root {
+  --color-primario: #729ef4;
+  --color-secundario: #839dd1;
+  --color-fondo: #262c40;
+  --color-modal: #e7f0f8;
+  --color-texto: #d3e2f2;
+  --tamanio-texto: 16px;
+}
+/* INICIO JUEGO */
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+  background-color: var(--color-secundario);
+}
+
+.h1_juego,
+.h2_juego {
+  color: var(--color-texto);
+}
+
+.p_juego {
+  font-size: 50px;
+}
+
+.contLetras {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  /* height: 100px; */
+  width: 80%;
+  /* background-color: aquamarine; */
+}
+
+.btnLetra {
+  color: var(--color-texto);
+  /* font-size: 5vw; */
+  font-size: clamp(1rem, 10vw, 2rem);
+  width: 10vw;
+  font-weight: bold;
+  border: none;
+  border-bottom: 5px solid var(--color-secundario);
+  margin: 0 0.5vw;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: none;
+}
+
+.mainJuego {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+}
+.intentos {
+  position: absolute;
+  font-size: 2rem;
+}
+/* FIN JUEGO */
+
+body {
+  background-color: var(--color-fondo);
+}
+.img-logo {
+  width: 150px;
+}
+h1 {
+  color: var(--color-primario);
+  font-weight: bold;
+  text-align: center;
+}
+
+.texto {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  margin-top: 2.5%;
+}
+h2 {
+  color: var(--color-secundario);
+  font-weight: bold;
+  text-align: center;
+}
+p {
+  color: var(--color-texto);
+  font-size: 20px;
+  padding: 30px;
+}
+.spinner {
+  width: 25%;
+}
+
+main {
+  min-height: 100vh;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+fieldset {
+  background-color: var(--color-modal);
+  width: 70%;
+  padding: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.36);
+  border-radius: 10px;
+  -webkit-box-shadow: -5px 6px 46px 0px rgba(156, 182, 221, 0.3);
+  -moz-box-shadow: -5px 6px 46px 0px rgba(156, 182, 221, 0.3);
+  box-shadow: -5px 6px 46px 0px rgba(156, 182, 221, 0.3);
+}
+
+.ancla {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+}
+
+dialog {
+  background-color: var(--color-modal);
+  width: 30%;
+  padding: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.36);
+  border-radius: 10px;
+  -webkit-box-shadow: -5px 6px 46px 0px rgba(156, 182, 221, 0.3);
+  -moz-box-shadow: -5px 6px 46px 0px rgba(156, 182, 221, 0.3);
+  box-shadow: -5px 6px 46px 0px rgba(156, 182, 221, 0.3);
+}
+
+dialog > h2 {
+  color: var(--color-fondo);
+}
+
+@media screen and (max-width: 1000px) {
+  main {
+    flex-direction: column;
+  }
+  .login-img {
+    width: 412px;
+    height: 412px;
+  }
+  fieldset {
+    width: 50%;
+  }
+  dialog {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  fieldset {
+    width: 90%;
+  }
+  dialog {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  dialog {
+    width: 90%;
+  }
+}
