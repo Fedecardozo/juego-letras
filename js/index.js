@@ -5,6 +5,7 @@ import { cargarJuego, palabraJuego, VerificarPalabra, clickLetra, leerPalabra } 
 const $form = document.getElementById("form-login");
 const $formRegistrar = document.getElementById("formRegistrar");
 const { floatingInputUser, floatingInputPass, floatingInputRepetir } = $formRegistrar;
+const audioFondo = new Audio("../audio/fondo.mp3");
 // const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 const usuarios = leerCookie();
 // const usuarios = [{ usuario: "fede", password: "1234" }];
@@ -156,6 +157,11 @@ function leerCookie() {
   }
   return [];
 }
+
+//Sonido
+audioFondo.addEventListener("ended", () => {
+  audioFondo.play();
+});
 
 // INICIO JUEGO
 

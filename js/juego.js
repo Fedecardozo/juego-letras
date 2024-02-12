@@ -7,70 +7,76 @@ const palabras = [
   "CASA",
   "SILLA",
   "PIANO",
+  "OSCURO",
+  "AMISTAD",
+  "CRUCERO",
+  "COLORES",
+  "TRABAJO",
   "GUITARRA",
   "ELEFANTE",
-  "PERSEVERANCIA",
-  "DESAFIANTE",
-  "EXTRAORDINARIO",
-  "INCONMESURABLE",
-  "INCOMPRENSIBLE",
-  "ANTICONSTITUCIONALIDAD",
+  "VEHICULO",
 ];
 
 export function cargarJuego(palabra) {
   const usuario = JSON.parse(localStorage.getItem("sesion"));
-  const $h1 = document.querySelector("h1");
-  $h1.textContent = "Hola " + usuario.usuario + "! Hoy te encuentras en el nivel " + usuario.nivel;
 
-  const $divCompletar = document.getElementById("divPalabraCompletar");
-  const $divDesordenado = document.getElementById("divPalabraDesordenada");
+  if (usuario.nivel === palabras.length) {
+    alert("Ya completataste todo el juego!");
+    location.reload();
+  } else {
+    const $h1 = document.querySelector("h1");
+    $h1.textContent = "Hola " + usuario.usuario + "! Hoy te encuentras en el nivel " + usuario.nivel;
 
-  function desordenar(palabra) {
-    // Convertir la palabra en un array de caracteres
-    let letras = palabra.split("");
+    const $divCompletar = document.getElementById("divPalabraCompletar");
+    const $divDesordenado = document.getElementById("divPalabraDesordenada");
 
-    // Barajar las letras del array
-    for (let i = letras.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
-      let temp = letras[i];
-      letras[i] = letras[j];
-      letras[j] = temp;
+    function desordenar(palabra) {
+      // Convertir la palabra en un array de caracteres
+      let letras = palabra.split("");
+
+      // Barajar las letras del array
+      for (let i = letras.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = letras[i];
+        letras[i] = letras[j];
+        letras[j] = temp;
+      }
+
+      // Unir las letras nuevamente en una palabra desordenada
+      let palabraDesordenada = letras.join("");
+
+      return palabraDesordenada;
     }
 
-    // Unir las letras nuevamente en una palabra desordenada
-    let palabraDesordenada = letras.join("");
+    let palabraDesordenada = desordenar(palabra);
 
-    return palabraDesordenada;
+    while (palabraDesordenada === palabra) {
+      palabraDesordenada = desordenar(palabra);
+    }
+
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < palabraDesordenada.length; i++) {
+      const btn = document.createElement("button");
+      btn.textContent = palabraDesordenada[i];
+      btn.classList.add("btnLetra");
+      btn.setAttribute("data-posicion", i);
+      btn.setAttribute("data-div", "des");
+      fragment.appendChild(btn);
+    }
+
+    $divDesordenado.appendChild(fragment);
+
+    const fragment2 = document.createDocumentFragment();
+    for (let i = 0; i < palabra.length; i++) {
+      const btn = document.createElement("button");
+      // btn.textContent = palabra[i];
+      btn.classList.add("btnLetra");
+      btn.setAttribute("data-div", "com");
+      fragment2.appendChild(btn);
+    }
+
+    $divCompletar.appendChild(fragment2);
   }
-
-  let palabraDesordenada = desordenar(palabra);
-
-  while (palabraDesordenada === palabra) {
-    palabraDesordenada = desordenar(palabra);
-  }
-
-  const fragment = document.createDocumentFragment();
-  for (let i = 0; i < palabraDesordenada.length; i++) {
-    const btn = document.createElement("button");
-    btn.textContent = palabraDesordenada[i];
-    btn.classList.add("btnLetra");
-    btn.setAttribute("data-posicion", i);
-    btn.setAttribute("data-div", "des");
-    fragment.appendChild(btn);
-  }
-
-  $divDesordenado.appendChild(fragment);
-
-  const fragment2 = document.createDocumentFragment();
-  for (let i = 0; i < palabra.length; i++) {
-    const btn = document.createElement("button");
-    // btn.textContent = palabra[i];
-    btn.classList.add("btnLetra");
-    btn.setAttribute("data-div", "com");
-    fragment2.appendChild(btn);
-  }
-
-  $divCompletar.appendChild(fragment2);
 }
 
 export function palabraJuego() {
@@ -127,9 +133,13 @@ export function VerificarPalabra(formada, palabra, usuarios, $divDesordenado, $d
       dialogFin.setAttribute("open", true);
       activarDesactivarBotones(true);
 
+      const h3 = document.getElementById("h3Dialog");
       if (usuario.nivel === 10) {
-        const h3 = document.getElementById("h3Dialog");
         h3.textContent = "Te ganaste un 20% de descuento en productos seleccionados en nuestra tienda";
+      } else if (usuario.nivel === 15) {
+        h3.textContent = "Te ganaste una orden de compra por $20.000!";
+      } else {
+        h3.textContent = "Ya completaste tu nivel del dia!";
       }
     } else {
       const $modal = document.createElement("dialog");
