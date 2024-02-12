@@ -1,16 +1,18 @@
 import { fetchGet } from "./fetch.js";
 import { ajaxGet } from "./ajax.js";
-import { cargarJuego, palabraJuego, VerificarPalabra, clickLetra, leerPalabra } from "./juego.js";
+import { cargarJuego, palabraJuego, VerificarPalabra, clickLetra, leerPalabra, siguienteNivel } from "./juego.js";
 
 const $form = document.getElementById("form-login");
 const $formRegistrar = document.getElementById("formRegistrar");
 const { floatingInputUser, floatingInputPass, floatingInputRepetir } = $formRegistrar;
+const audioFondo = new Audio("../audio/fondo.mp3");
+
 // const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 const usuarios = leerCookie();
 // const usuarios = [{ usuario: "fede", password: "1234" }];
 const { floatingInput, floatingPassword } = $form;
 
-console.log(usuarios);
+// console.log(usuarios);
 
 let palabra = palabraJuego();
 const $btnOjo = document.getElementById("basic-addon1");
@@ -91,14 +93,12 @@ document.getElementById("btnSesion").addEventListener("click", (e) => {
     $fieldset.hidden = false;
     $img.hidden = true;
     let flag = false;
-    let fecha = false;
     if (usuarios.length) {
       usuarios.forEach((element) => {
         if (element.usuario === floatingInput.value && element.password === floatingPassword.value) {
           localStorage.setItem("sesion", JSON.stringify(element));
           palabra = palabraJuego();
           flag = true;
-          fecha = element.fecha || false;
         }
       });
     }
@@ -106,11 +106,8 @@ document.getElementById("btnSesion").addEventListener("click", (e) => {
     if (!flag) {
       alert("Usuario o contraseña incorrecta!");
     } else if (flag) {
-      if (!fecha || calcularDias(fecha)) {
-        loadJuego();
-      } else {
-        alert("Ya juego su nivel del dia");
-      }
+      loadJuego();
+      audioFondo.play();
     }
   }, 2000);
 });
@@ -157,6 +154,11 @@ function leerCookie() {
   return [];
 }
 
+//Sonido
+audioFondo.addEventListener("ended", () => {
+  audioFondo.play();
+});
+
 // INICIO JUEGO
 
 window.addEventListener("click", (e) => {
@@ -171,14 +173,21 @@ window.addEventListener("click", (e) => {
     clickLetra($divDesordenado, $divCompletar, e);
 
     const formada = leerPalabra($divCompletar);
-
     setTimeout(() => {
       if (VerificarPalabra(formada, palabra, usuarios, $divDesordenado, $divCompletar)) {
         escribirCookie();
+        palabra = palabraJuego();
       }
     }, 500);
-  } else if (target.matches("button") && target.id === "btnAceptar") {
-    location.reload();
+  } else if (target.matches("button")) {
+    if (target.id === "btnAceptar") {
+      //Siguiente nivel
+      const dialogFin = document.getElementById("dialogFin");
+      dialogFin.open = false;
+      siguienteNivel();
+    } else if (target.id === "btnSalir") {
+      location.reload();
+    }
   }
 });
 
@@ -197,17 +206,6 @@ function loadJuego() {
     $body.innerHTML = contenidoBody;
     cargarJuego(palabra);
   });
-}
-
-function calcularDias(fecha) {
-  // Calcula la diferencia en milisegundos
-  const diferenciaMilisegundos = new Date() - fecha;
-
-  // Convierte la diferencia a días
-  const diferenciaDias = diferenciaMilisegundos / (1000 * 60 * 60 * 24);
-
-  // Verifica si han pasado más de un día
-  return diferenciaDias > 1;
 }
 
 // FIN JUEGO
