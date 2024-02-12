@@ -11,7 +11,7 @@ const usuarios = leerCookie();
 // const usuarios = [{ usuario: "fede", password: "1234" }];
 const { floatingInput, floatingPassword } = $form;
 
-console.log(usuarios);
+// console.log(usuarios);
 
 let palabra = palabraJuego();
 const $btnOjo = document.getElementById("basic-addon1");
@@ -109,6 +109,7 @@ document.getElementById("btnSesion").addEventListener("click", (e) => {
     } else if (flag) {
       if (!fecha || calcularDias(fecha)) {
         loadJuego();
+        audioFondo.play();
       } else {
         alert("Ya juego su nivel del dia");
       }
