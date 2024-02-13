@@ -61,62 +61,73 @@ $btnRegistrar.addEventListener("click", (e) => {
 
   let flag = false;
 
-  if (usuarios.length) {
-    usuarios.forEach((element) => {
-      if (element.usuario === floatingInputUser.value) {
-        alertMsj("Usuario ya existente!", "Pruebe con otro", error);
-        flag = true;
-      }
-    });
-  }
-
-  if (!flag) {
-    if (floatingInputPass.value === floatingInputRepetir.value) {
-      usuarios.push(user);
-      localStorage.setItem("usuarios", JSON.stringify(usuarios));
-      alertMsj("Usuario creado con exito", "", check);
-      dialogClose();
-    } else alertMsj("Las contraseñas no coinciden", "", error);
-  }
-});
-
-document.getElementById("btnSesion").addEventListener("click", (e) => {
-  e.preventDefault();
-  const $img = document.getElementById("spinner");
-  $img.hidden = false;
-  const $fieldset = document.querySelector("fieldset");
-  $fieldset.hidden = true;
-  setTimeout(() => {
-    $fieldset.hidden = false;
-    $img.hidden = true;
-    let flag = false;
-    let fecha = false;
-    let nivel = 1;
+  if (floatingInputPass.value == "" || floatingInputRepetir.value == "" || floatingInputUser.value == "") {
+    alertMsj("Faltan completar datos", "No se puede crear usuario con campos vacios", error);
+  } else {
     if (usuarios.length) {
       usuarios.forEach((element) => {
-        if (element.usuario === floatingInput.value && element.password === floatingPassword.value) {
-          localStorage.setItem("sesion", JSON.stringify(element));
-          palabra = palabraJuego();
+        if (element.usuario === floatingInputUser.value) {
+          alertMsj("Usuario ya existente!", "Pruebe con otro", error);
           flag = true;
-          fecha = element.fecha || false;
-          nivel = element.nivel;
         }
       });
     }
 
     if (!flag) {
-      alertMsj("ERROR!", "Usuario o contraseña incorrecta!", error);
-    } else if (flag) {
-      if (nivel > palabras.length) {
-        alertMsj("Juego completado", "No hay más niveles para jugar", final);
-      } else if (!fecha || calcularDias(fecha)) {
-        loadJuego();
-        audioFondo.play();
-      } else {
-        alertMsj("Ya jugo su nivel del dia!", "", error);
-      }
+      if (floatingInputPass.value === floatingInputRepetir.value) {
+        usuarios.push(user);
+        localStorage.setItem("usuarios", JSON.stringify(usuarios));
+        alertMsj("Usuario creado con exito", "", check);
+        dialogClose();
+        floatingInputUser.value = "";
+        floatingInputPass.value = "";
+        floatingInputRepetir.value = "";
+      } else alertMsj("Las contraseñas no coinciden", "", error);
     }
-  }, 2000);
+  }
+});
+
+document.getElementById("btnSesion").addEventListener("click", (e) => {
+  e.preventDefault();
+  if (floatingInput.value == "" || floatingPassword.value == "") {
+    alertMsj("Faltan completar datos", "No se puede iniciar sesión con campos vacios", error);
+  } else {
+    const $img = document.getElementById("spinner");
+    $img.hidden = false;
+    const $fieldset = document.querySelector("fieldset");
+    $fieldset.hidden = true;
+    setTimeout(() => {
+      $fieldset.hidden = false;
+      $img.hidden = true;
+      let flag = false;
+      let fecha = false;
+      let nivel = 1;
+      if (usuarios.length) {
+        usuarios.forEach((element) => {
+          if (element.usuario === floatingInput.value && element.password === floatingPassword.value) {
+            localStorage.setItem("sesion", JSON.stringify(element));
+            palabra = palabraJuego();
+            flag = true;
+            fecha = element.fecha || false;
+            nivel = element.nivel;
+          }
+        });
+      }
+
+      if (!flag) {
+        alertMsj("ERROR!", "Usuario o contraseña incorrecta!", error);
+      } else if (flag) {
+        if (nivel > palabras.length) {
+          alertMsj("Juego completado", "No hay más niveles para jugar", final);
+        } else if (!fecha || calcularDias(fecha)) {
+          loadJuego();
+          audioFondo.play();
+        } else {
+          alertMsj("Ya jugo su nivel del dia!", "", error);
+        }
+      }
+    }, 2000);
+  }
 });
 
 //Sonido
