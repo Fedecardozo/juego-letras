@@ -22,8 +22,9 @@ header {
 footer {
   background-color: var(--color-secundario);
   width: 100%;
-  text-align: center;
-  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
 }
 
 .h1_juego,
