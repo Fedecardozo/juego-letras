@@ -1,5 +1,5 @@
 import { ajaxGet } from "./ajax.js";
-import { error, check } from "./gifs.js";
+import { error, check, final } from "./gifs.js";
 import { cargarJuego, palabraJuego, VerificarPalabra, clickLetra, leerPalabra, palabras, alertMsj } from "./juego.js";
 
 const $form = document.getElementById("form-login");
@@ -91,6 +91,7 @@ document.getElementById("btnSesion").addEventListener("click", (e) => {
     $img.hidden = true;
     let flag = false;
     let fecha = false;
+    let nivel = 1;
     if (usuarios.length) {
       usuarios.forEach((element) => {
         if (element.usuario === floatingInput.value && element.password === floatingPassword.value) {
@@ -98,6 +99,7 @@ document.getElementById("btnSesion").addEventListener("click", (e) => {
           palabra = palabraJuego();
           flag = true;
           fecha = element.fecha || false;
+          nivel = element.nivel;
         }
       });
     }
@@ -105,7 +107,9 @@ document.getElementById("btnSesion").addEventListener("click", (e) => {
     if (!flag) {
       alertMsj("ERROR!", "Usuario o contraseña incorrecta!", error);
     } else if (flag) {
-      if (!fecha || calcularDias(fecha)) {
+      if (nivel > palabras.length) {
+        alertMsj("Juego completado", "No hay más niveles para jugar", final);
+      } else if (!fecha || calcularDias(fecha)) {
         loadJuego();
         audioFondo.play();
       } else {
