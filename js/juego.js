@@ -1,5 +1,6 @@
+import { ganador, regalo } from "./gifs.js";
 // INICIO JUEGO
-const palabras = [
+export const palabras = [
   "SOL",
   "GATO",
   "FLOR",
@@ -17,15 +18,38 @@ const palabras = [
   "VEHICULO",
 ];
 
+export function alertMsj(titulo, msj, img) {
+  Swal.fire({
+    title: titulo,
+    text: msj,
+    imageUrl: img,
+    imageWidth: 100,
+    imageHeight: 100,
+    confirmButtonText: "Aceptar",
+  });
+}
+
 export function cargarJuego(palabra) {
   const usuario = JSON.parse(localStorage.getItem("sesion"));
 
-  if (usuario.nivel === palabras.length) {
-    alert("Ya completataste todo el juego!");
+  if (usuario.nivel > palabras.length) {
+    alertMsj("Felicitaciones", "Ya completaste todo el juego!", ganador);
     location.reload();
   } else {
+    let nivel = usuario.nivel - 1;
     const $h1 = document.querySelector("h1");
-    $h1.textContent = "Hola " + usuario.usuario + "! Hoy te encuentras en el nivel " + usuario.nivel;
+    const $p = document.getElementById("pIntentos");
+    $h1.textContent =
+      "Hola " +
+      usuario.usuario +
+      "! Te encuentras en el nivel " +
+      usuario.nivel +
+      " y tienes " +
+      nivel * 1000 +
+      " puntos";
+
+    const intentos = usuario.intentos || 0;
+    $p.textContent = "Intentos: " + intentos;
 
     const $divCompletar = document.getElementById("divPalabraCompletar");
     const $divDesordenado = document.getElementById("divPalabraDesordenada");
@@ -115,54 +139,57 @@ export function clickLetra($divDesordenado, $divCompletar, e) {
 
 export function VerificarPalabra(formada, palabra, usuarios, $divDesordenado, $divCompletar) {
   if (formada.length == palabra.length) {
-    let retorno = false;
     const $p = document.getElementById("pIntentos");
+    const usuario = JSON.parse(localStorage.getItem("sesion"));
+    let indice = usuarios.findIndex((user) => user.usuario === usuario.usuario);
 
     if (palabra === formada) {
       const audioVictoria = new Audio("../audio/victoria.mp3");
       audioVictoria.play();
-      const usuario = JSON.parse(localStorage.getItem("sesion"));
-      usuario.nivel++;
-      localStorage.setItem("sesion", JSON.stringify(usuario));
-      let indice = usuarios.findIndex((user) => user.usuario === usuario.usuario);
       usuario.fecha = new Date();
-      usuarios[indice] = usuario;
-      retorno = true;
+      usuario.intentos = 0;
       const dialogFin = document.getElementById("dialogFin");
       $p.hidden = true;
       dialogFin.setAttribute("open", true);
       activarDesactivarBotones(true);
 
       const h3 = document.getElementById("h3Dialog");
+      const img = document.getElementById("imgDialog");
       if (usuario.nivel === 10) {
+        img.setAttribute("src", regalo);
         h3.textContent = "Te ganaste un 20% de descuento en productos seleccionados en nuestra tienda";
-      } else if (usuario.nivel === 15) {
+      } else if (usuario.nivel === palabras.length - 1) {
+        img.setAttribute("src", regalo);
         h3.textContent = "Te ganaste una orden de compra por $20.000!";
+      } else if (usuario.nivel === palabras.length) {
+        img.setAttribute("src", ganador);
+        h3.textContent = "Superaste todos los niveles!";
       } else {
         h3.textContent = "Ya completaste tu nivel del dia!";
       }
+
+      usuario.nivel++;
     } else {
-      const $modal = document.createElement("dialog");
-      const $h2 = document.createElement("h2");
+      const $modal = document.getElementById("dialogError");
       const audioDerrota = new Audio("../audio/derrota.mp3");
       audioDerrota.play();
       let intentos = isNaN($p.dataset.intentos) ? 0 : parseInt($p.dataset.intentos);
       intentos++;
+      usuario.intentos = intentos;
       $p.setAttribute("data-intentos", intentos);
       $p.textContent = "Intentos: " + intentos;
-      $h2.textContent = "Palabra incorrecta! Intentelo nuevamente";
       activarDesactivarBotones(true);
       setTimeout(() => {
         reinciarJuego($divDesordenado, $divCompletar);
       }, 2000);
-      $modal.appendChild($h2);
       $modal.open = true;
       document.querySelector("main").appendChild($modal);
       setTimeout(() => {
         $modal.open = false;
       }, 2000);
     }
-    return retorno;
+    usuarios[indice] = usuario;
+    localStorage.setItem("sesion", JSON.stringify(usuario));
   }
 }
 
