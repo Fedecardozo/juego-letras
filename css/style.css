@@ -15,16 +15,20 @@ header {
   justify-content: center;
   flex-direction: column;
   padding: 20px;
+  width: 100%;
   background-color: var(--color-secundario);
+}
+
+footer {
+  background-color: var(--color-secundario);
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
 }
 
 .h1_juego,
 .h2_juego {
   color: var(--color-texto);
-}
-
-.p_juego {
-  font-size: 50px;
 }
 
 .contLetras {
@@ -56,16 +60,47 @@ header {
   justify-content: space-evenly;
   align-items: center;
   flex-direction: column;
+  height: 100%;
+  width: 100%;
 }
+
+.divJuego {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.btn-pausa {
+  width: 120px;
+  /* background-color: var(--color-secundario); */
+}
+
 .intentos {
-  position: absolute;
-  font-size: 2rem;
+  font-size: 1.5rem;
+  padding: 0;
+  margin: 0;
+}
+
+.img-dialog {
+  width: 100px;
+  height: 100px;
+}
+
+.dialog-juego {
+  background-color: white;
 }
 /* FIN JUEGO */
 
 body {
   background-color: var(--color-fondo);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
 }
+
 .img-logo {
   width: 150px;
 }
@@ -98,7 +133,7 @@ p {
   width: 25%;
 }
 
-main {
+.main-login {
   min-height: 100vh;
   display: flex;
   justify-content: space-evenly;

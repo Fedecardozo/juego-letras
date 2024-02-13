@@ -1,13 +1,12 @@
-import { fetchGet } from "./fetch.js";
 import { ajaxGet } from "./ajax.js";
-import { cargarJuego, palabraJuego, VerificarPalabra, clickLetra, leerPalabra } from "./juego.js";
+import { error, check } from "./gifs.js";
+import { cargarJuego, palabraJuego, VerificarPalabra, clickLetra, leerPalabra, palabras, alertMsj } from "./juego.js";
 
 const $form = document.getElementById("form-login");
 const $formRegistrar = document.getElementById("formRegistrar");
 const { floatingInputUser, floatingInputPass, floatingInputRepetir } = $formRegistrar;
 const audioFondo = new Audio("../audio/fondo.mp3");
-// const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-const usuarios = leerCookie();
+const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 // const usuarios = [{ usuario: "fede", password: "1234" }];
 const { floatingInput, floatingPassword } = $form;
 
@@ -65,7 +64,7 @@ $btnRegistrar.addEventListener("click", (e) => {
   if (usuarios.length) {
     usuarios.forEach((element) => {
       if (element.usuario === floatingInputUser.value) {
-        alert("No se puede crear. Ese usuario ya existe");
+        alertMsj("Usuario ya existente!", "Pruebe con otro", error);
         flag = true;
       }
     });
@@ -74,11 +73,10 @@ $btnRegistrar.addEventListener("click", (e) => {
   if (!flag) {
     if (floatingInputPass.value === floatingInputRepetir.value) {
       usuarios.push(user);
-      // localStorage.setItem("usuarios", JSON.stringify(usuarios));
-      escribirCookie();
-      alert("Usuario creado con exito");
+      localStorage.setItem("usuarios", JSON.stringify(usuarios));
+      alertMsj("Usuario creado con exito", "", check);
       dialogClose();
-    } else alert("Las contraseñas no coinciden");
+    } else alertMsj("Las contraseñas no coinciden", "", error);
   }
 });
 
@@ -105,59 +103,17 @@ document.getElementById("btnSesion").addEventListener("click", (e) => {
     }
 
     if (!flag) {
-      alert("Usuario o contraseña incorrecta!");
+      alertMsj("ERROR!", "Usuario o contraseña incorrecta!", error);
     } else if (flag) {
       if (!fecha || calcularDias(fecha)) {
         loadJuego();
         audioFondo.play();
       } else {
-        alert("Ya juego su nivel del dia");
+        alertMsj("Ya jugo su nivel del dia!", "", error);
       }
     }
   }, 2000);
 });
-
-function escribirCookie() {
-  // Nombre y valor de la cookie
-  const nombreCookie = "usuarios";
-  const valorCookie = JSON.stringify(usuarios);
-
-  // Configurar la fecha de expiración (opcional)
-  let fechaExpiracion = new Date();
-  fechaExpiracion.setDate(fechaExpiracion.getDate() + 99999); // Caduca en 7 días
-
-  // Crear la cadena de cookie
-  let cadenaCookie =
-    nombreCookie + "=" + encodeURIComponent(valorCookie) + "; expires=" + fechaExpiracion.toUTCString() + "; path=/";
-
-  // Escribir la cookie
-  document.cookie = cadenaCookie;
-
-  // alert("Cookie escrita con éxito.");
-}
-
-function leerCookie() {
-  // Nombre de la cookie que deseas leer
-  const nombreCookie = "usuarios";
-
-  // Separar las cookies en un array
-  const cookies = document.cookie.split(";");
-
-  // Buscar la cookie específica
-  for (let i = 0; i < cookies.length; i++) {
-    let cookie = cookies[i].trim();
-
-    // Verificar si la cookie comienza con el nombre deseado
-    if (cookie.indexOf(nombreCookie + "=") === 0) {
-      // Obtener el valor de la cookie
-      let valorCookie = cookie.substring(nombreCookie.length + 1);
-      // alert("Valor de la cookie: " + decodeURIComponent(valorCookie));
-
-      return JSON.parse(decodeURIComponent(valorCookie));
-    }
-  }
-  return [];
-}
 
 //Sonido
 audioFondo.addEventListener("ended", () => {
@@ -180,12 +136,29 @@ window.addEventListener("click", (e) => {
     const formada = leerPalabra($divCompletar);
 
     setTimeout(() => {
-      if (VerificarPalabra(formada, palabra, usuarios, $divDesordenado, $divCompletar)) {
-        escribirCookie();
-      }
+      VerificarPalabra(formada, palabra, usuarios, $divDesordenado, $divCompletar);
+      localStorage.setItem("usuarios", JSON.stringify(usuarios));
     }, 500);
-  } else if (target.matches("button") && target.id === "btnAceptar") {
-    location.reload();
+  } else if (target.matches("button")) {
+    const $pause = document.getElementById("dialogPaused");
+    const $intentos = document.getElementById("pIntentos");
+
+    if (target.id === "btnAceptar") {
+      //Siguiente nivel
+      const dialogFin = document.getElementById("dialogFin");
+      dialogFin.open = false;
+      location.reload();
+    } else if (target.id === "btnPausedSalir") {
+      location.reload();
+    } else if (target.id === "btnPausedContinuar") {
+      $pause.open = false;
+      $intentos.hidden = false;
+      audioFondo.play();
+    } else if (target.id === "btnPaused") {
+      $intentos.hidden = true;
+      audioFondo.pause();
+      $pause.open = true;
+    }
   }
 });
 
@@ -207,14 +180,13 @@ function loadJuego() {
 }
 
 function calcularDias(fecha) {
-  // Calcula la diferencia en milisegundos
-  const diferenciaMilisegundos = new Date() - fecha;
+  const diaActual = new Date().getDate();
+  const diaFecha = new Date(fecha).getDate();
 
-  // Convierte la diferencia a días
-  const diferenciaDias = diferenciaMilisegundos / (1000 * 60 * 60 * 24);
-
+  // console.log("fecha actual: " + diaActual);
+  // console.log("fecha usuario: " + diaFecha);
   // Verifica si han pasado más de un día
-  return diferenciaDias > 1;
+  return diaFecha < diaActual;
 }
 
 // FIN JUEGO
