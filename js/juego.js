@@ -31,7 +31,6 @@ export function alertMsj(titulo, msj, img) {
 
 export function cargarJuego(palabra) {
   const usuario = JSON.parse(localStorage.getItem("sesion"));
-
   if (usuario.nivel === palabras.length) {
     //Como esta en el ultimo nivel ocultado el boton de continuar
     document.getElementById("btnAceptar").hidden = true;
@@ -103,8 +102,11 @@ export function clickLetra($divDesordenado, $divCompletar, target) {
 
 export function VerificarPalabra(formada, palabra, usuarios, $divDesordenado, $divCompletar) {
   if (formada.length == palabra.length) {
+    console.log(formada);
+    console.log(palabra);
     const usuario = JSON.parse(localStorage.getItem("sesion"));
     let indice = usuarios.findIndex((user) => user.usuario === usuario.usuario);
+    let retorno = false;
 
     if (palabra === formada) {
       //Sonido victoria
@@ -126,6 +128,7 @@ export function VerificarPalabra(formada, palabra, usuarios, $divDesordenado, $d
       }
 
       usuario.nivel++;
+      retorno = true;
     } else {
       //Audio cuando pierde
       new Audio("../audio/derrota.mp3").play();
@@ -147,11 +150,12 @@ export function VerificarPalabra(formada, palabra, usuarios, $divDesordenado, $d
       }, 2000);
 
       // Muestro modal por 2 segundos
-      mostrarModal("dialogError", 2000);
+      mostrarModal("dialogError", 2200);
     }
 
     usuarios[indice] = usuario;
     localStorage.setItem("sesion", JSON.stringify(usuario));
+    return retorno;
   }
 }
 
@@ -227,7 +231,7 @@ function crearBtnsLetras(palabra, $div, vacio) {
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < palabra.length; i++) {
     const btn = document.createElement("button");
-    btn.textContent = vacio ? "" : palabra[i];
+    if (!vacio) btn.textContent = palabra[i];
     btn.classList.add("btnLetra");
     btn.setAttribute("data-posicion", i);
     btn.setAttribute("data-div", "des");

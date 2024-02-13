@@ -144,7 +144,9 @@ window.addEventListener("click", (e) => {
       const formada = leerPalabra($divCompletar);
 
       setTimeout(() => {
-        VerificarPalabra(formada, palabra, usuarios, $divDesordenado, $divCompletar);
+        if (VerificarPalabra(formada, palabra, usuarios, $divDesordenado, $divCompletar)) {
+          palabra = palabraJuego();
+        }
         localStorage.setItem("usuarios", JSON.stringify(usuarios));
       }, 500);
     } else {
