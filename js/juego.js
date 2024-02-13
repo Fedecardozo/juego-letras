@@ -50,6 +50,7 @@ export function cargarJuego(palabra) {
 
     const intentos = usuario.intentos || 0;
     $p.textContent = "Intentos: " + intentos;
+    $p.setAttribute("data-intentos", intentos);
 
     const $divCompletar = document.getElementById("divPalabraCompletar");
     const $divDesordenado = document.getElementById("divPalabraDesordenada");

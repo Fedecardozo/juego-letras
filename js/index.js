@@ -1,5 +1,5 @@
 import { ajaxGet } from "./ajax.js";
-import { ganador, error, check } from "./gifs.js";
+import { error, check } from "./gifs.js";
 import { cargarJuego, palabraJuego, VerificarPalabra, clickLetra, leerPalabra, palabras, alertMsj } from "./juego.js";
 
 const $form = document.getElementById("form-login");
