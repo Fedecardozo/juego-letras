@@ -24,8 +24,16 @@ export function cargarJuego(palabra) {
     alert("Ya completataste todo el juego!");
     location.reload();
   } else {
+    let nivel = usuario.nivel - 1;
     const $h1 = document.querySelector("h1");
-    $h1.textContent = "Hola " + usuario.usuario + "! Te encuentras en el nivel " + usuario.nivel;
+    $h1.textContent =
+      "Hola " +
+      usuario.usuario +
+      "! Te encuentras en el nivel " +
+      usuario.nivel +
+      " y tienes " +
+      nivel * 1000 +
+      " puntos";
 
     const $divCompletar = document.getElementById("divPalabraCompletar");
     const $divDesordenado = document.getElementById("divPalabraDesordenada");
@@ -148,6 +156,7 @@ export function VerificarPalabra(formada, palabra, usuarios, $divDesordenado, $d
       audioDerrota.play();
       let intentos = isNaN($p.dataset.intentos) ? 0 : parseInt($p.dataset.intentos);
       intentos++;
+      $p.hidden = false;
       $p.setAttribute("data-intentos", intentos);
       $p.textContent = "Intentos: " + intentos;
       $h2.textContent = "Palabra incorrecta! Intentelo nuevamente";
@@ -191,6 +200,8 @@ function activarDesactivarBotones(boolean) {
 }
 
 export function siguienteNivel() {
+  const $p = document.getElementById("pIntentos");
+
   const $divCompletar = document.getElementById("divPalabraCompletar");
   const $divDesordenado = document.getElementById("divPalabraDesordenada");
   while ($divCompletar.firstChild) {
@@ -199,7 +210,13 @@ export function siguienteNivel() {
   while ($divDesordenado.firstChild) {
     $divDesordenado.removeChild($divDesordenado.firstChild);
   }
+
   cargarJuego(palabraJuego());
+
+  const intentos = 0;
+  $p.setAttribute("data-intentos", intentos);
+  $p.textContent = "Intentos: " + intentos;
+  $p.hidden = false;
 }
 
 // FIN JUEGO

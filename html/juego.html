@@ -18,7 +18,6 @@
   <body>
     <header>
       <h1 class="h1_juego"></h1>
-      <h2 class="h2_juego">Intenta formar la siguiente palabra</h2>
     </header>
     <main class="mainJuego">
       <div class="contLetras" id="divPalabraCompletar"></div>
@@ -30,9 +29,20 @@
           <button id="btnAceptar" class="btn btn-success w-50 m-3">Continuar</button>
         </div>
       </dialog>
-      <p class="intentos" id="pIntentos">Intentos: 0</p>
+      <dialog id="dialogPaused">
+        <h2>Pausa</h2>
+        <div class="d-flex justify-content-center">
+          <button id="btnPausedSalir" class="btn btn-danger w-50 m-3">Salir</button>
+          <button id="btnPausedContinuar" class="btn btn-success w-50 m-3">Continuar</button>
+        </div>
+      </dialog>
+      <div class="divJuego">
+        <p class="intentos" id="pIntentos">Intentos: 0</p>
+        <button id="btnPaused" class="btn btn-info btn-pausa">Pausa</button>
+      </div>
       <div class="contLetras" id="divPalabraDesordenada"></div>
     </main>
+    <footer><p>LABORATORIO ALDO - TODOS LOS DERECHOS RESERVADOS 2024 ©</p></footer>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"

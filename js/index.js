@@ -180,13 +180,24 @@ window.addEventListener("click", (e) => {
       }
     }, 500);
   } else if (target.matches("button")) {
+    const $pause = document.getElementById("dialogPaused");
+    const $intentos = document.getElementById("pIntentos");
+
     if (target.id === "btnAceptar") {
       //Siguiente nivel
       const dialogFin = document.getElementById("dialogFin");
       dialogFin.open = false;
       siguienteNivel();
-    } else if (target.id === "btnSalir") {
+    } else if (target.id === "btnSalir" || target.id === "btnPausedSalir") {
       location.reload();
+    } else if (target.id === "btnPausedContinuar") {
+      $pause.open = false;
+      $intentos.hidden = false;
+      audioFondo.play();
+    } else if (target.id === "btnPaused") {
+      $intentos.hidden = true;
+      audioFondo.pause();
+      $pause.open = true;
     }
   }
 });
