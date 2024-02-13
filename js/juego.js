@@ -231,10 +231,14 @@ function crearBtnsLetras(palabra, $div, vacio) {
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < palabra.length; i++) {
     const btn = document.createElement("button");
-    if (!vacio) btn.textContent = palabra[i];
+    if (!vacio) {
+      btn.textContent = palabra[i];
+      btn.setAttribute("data-posicion", i);
+      btn.setAttribute("data-div", "des");
+    } else {
+      btn.setAttribute("data-div", "com");
+    }
     btn.classList.add("btnLetra");
-    btn.setAttribute("data-posicion", i);
-    btn.setAttribute("data-div", "des");
     fragment.appendChild(btn);
   }
 
