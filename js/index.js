@@ -68,22 +68,29 @@ $btnRegistrar.addEventListener("click", (e) => {
 
   let flag = false;
 
-  if (usuarios.length) {
-    usuarios.forEach((element) => {
-      if (element.usuario === floatingInputUser.value) {
-        alertMsj("Usuario ya existente!", "Pruebe con otro", error);
-        flag = true;
-      }
-    });
-  }
+  if (floatingInputPass.value == "" || floatingInputRepetir.value == "" || floatingInputUser.value == "") {
+    alertMsj("Faltan completar datos", "No se puede crear usuario con campos vacios", error);
+  } else {
+    if (usuarios.length) {
+      usuarios.forEach((element) => {
+        if (element.usuario === floatingInputUser.value) {
+          alertMsj("Usuario ya existente!", "Pruebe con otro", error);
+          flag = true;
+        }
+      });
+    }
 
-  if (!flag) {
-    if (floatingInputPass.value === floatingInputRepetir.value) {
-      usuarios.push(user);
-      localStorage.setItem("usuarios", JSON.stringify(usuarios));
-      alertMsj("Usuario creado con exito", "", check);
-      dialogClose();
-    } else alertMsj("Las contraseñas no coinciden", "", error);
+    if (!flag) {
+      if (floatingInputPass.value === floatingInputRepetir.value) {
+        usuarios.push(user);
+        localStorage.setItem("usuarios", JSON.stringify(usuarios));
+        alertMsj("Usuario creado con exito", "", check);
+        dialogClose();
+        floatingInputUser.value = "";
+        floatingInputPass.value = "";
+        floatingInputRepetir.value = "";
+      } else alertMsj("Las contraseñas no coinciden", "", error);
+    }
   }
 });
 
