@@ -97,38 +97,42 @@ $btnRegistrar.addEventListener("click", (e) => {
 document.getElementById("btnSesion").addEventListener("click", (e) => {
   e.preventDefault();
 
-  const $img = document.getElementById("spinner");
-  $img.hidden = false;
+  if (floatingInput.value == "" || floatingPassword.value == "") {
+    alertMsj("Faltan completar datos", "No se puede iniciar sesión con campos vacios", error);
+  } else {
+    const $img = document.getElementById("spinner");
+    $img.hidden = false;
 
-  const $fieldset = document.querySelector("fieldset");
-  $fieldset.hidden = true;
+    const $fieldset = document.querySelector("fieldset");
+    $fieldset.hidden = true;
 
-  setTimeout(() => {
-    $fieldset.hidden = false;
-    $img.hidden = true;
+    setTimeout(() => {
+      $fieldset.hidden = false;
+      $img.hidden = true;
 
-    let flag = false;
-    let nivel = 1;
+      let flag = false;
+      let nivel = 1;
 
-    if (usuarios.length) {
-      usuarios.forEach((element) => {
-        if (element.usuario === floatingInput.value && element.password === floatingPassword.value) {
-          localStorage.setItem("sesion", JSON.stringify(element));
-          palabra = palabraJuego();
-          nivel = element.nivel;
-          flag = true;
-        }
-      });
-    }
+      if (usuarios.length) {
+        usuarios.forEach((element) => {
+          if (element.usuario === floatingInput.value && element.password === floatingPassword.value) {
+            localStorage.setItem("sesion", JSON.stringify(element));
+            palabra = palabraJuego();
+            nivel = element.nivel;
+            flag = true;
+          }
+        });
+      }
 
-    if (!flag) alertMsj("ERROR!", "Usuario o contraseña incorrecta!", error);
-    else if (flag && nivel > palabras.length) {
-      alertMsj("Juego completado", "No hay más niveles para jugar", final);
-    } else {
-      loadJuego();
-      audioFondo.play();
-    }
-  }, 2000);
+      if (!flag) alertMsj("ERROR!", "Usuario o contraseña incorrecta!", error);
+      else if (flag && nivel > palabras.length) {
+        alertMsj("Juego completado", "No hay más niveles para jugar", final);
+      } else {
+        loadJuego();
+        audioFondo.play();
+      }
+    }, 2000);
+  }
 });
 
 //Sonido
