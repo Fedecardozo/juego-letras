@@ -4,3 +4,4 @@ export const fiesta = "../img/fiesta.gif";
 export const error = "../img/error.gif";
 export const check = "../img/check.gif";
 export const triste = "../img/triste.gif";
+export const final = "../img/final.gif";
